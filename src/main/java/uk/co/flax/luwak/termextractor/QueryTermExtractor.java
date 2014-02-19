@@ -37,10 +37,6 @@ public class QueryTermExtractor {
      * The default list of Extractors to use
      */
     public static final ImmutableList<Extractor<?>> DEFAULT_EXTRACTORS = ImmutableList.of(
-            new IntervalFilterQueryExtractor(),
-            new NonOverlappingQueryExtractor(),
-            new FieldedConjunctionQueryExtractor(),
-            new FieldedBooleanQueryExtractor(),
             new BooleanTermExtractor(),
             new NumericRangeExtractor(),
             new RegexpAnyTermExtractor(),
