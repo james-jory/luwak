@@ -228,7 +228,13 @@ public class Monitor implements Closeable {
         return writer.numDocs();
     }
 
-    private void match(Query query, Collector collector) throws IOException {
+    /**
+     * Collect all indexed queries that match a particular presearcher query
+     * @param query the presearcher query to run
+     * @param collector a the Collector to call for each match
+     * @throws IOException
+     */
+    public void match(Query query, Collector collector) throws IOException {
         IndexSearcher searcher = null;
         long startTime = System.nanoTime();
         try {
@@ -335,6 +341,14 @@ public class Monitor implements Closeable {
         public void setSearchTime(long searchTime) {
             this.searchTime = searchTime;
         }
+    }
+
+    public QueryCache.Stats getQueryCacheStats() {
+        return queryCache.getStats();
+    }
+
+    public void purgeQueryCache() {
+
     }
 
 }

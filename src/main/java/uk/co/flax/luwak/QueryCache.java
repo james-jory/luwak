@@ -16,6 +16,8 @@ package uk.co.flax.luwak;
  * limitations under the License.
  */
 
+import java.io.IOException;
+
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.BytesRef;
 
@@ -24,6 +26,10 @@ public interface QueryCache {
     public Entry get(BytesRef hash) throws QueryCacheException;
 
     public BytesRef put(MonitorQuery query) throws QueryCacheException;
+
+    public Stats getStats();
+
+    public void purge(Monitor monitor) throws IOException;
 
     public static class Entry {
 
@@ -35,6 +41,17 @@ public interface QueryCache {
             this.mq = mq;
             this.matchQuery = matchQuery;
             this.highlightQuery = highlightQuery;
+        }
+    }
+
+    public static class Stats {
+
+        public final int count;
+        public final long ramBytesUsed;
+
+        public Stats(int count, long ramBytesUsed) {
+            this.count = count;
+            this.ramBytesUsed = ramBytesUsed;
         }
     }
 

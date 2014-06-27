@@ -39,4 +39,5 @@ public class LuceneQueryCache extends ParsingQueryCache {
     protected Query parse(String query, Map<String, String> metadata) throws Exception {
         return parser.parse(query);
     }
+
 }

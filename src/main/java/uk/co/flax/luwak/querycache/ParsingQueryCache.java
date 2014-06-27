@@ -14,12 +14,19 @@ package uk.co.flax.luwak.querycache;/*
  * limitations under the License.
  */
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.base.Strings;
+import org.apache.lucene.index.AtomicReaderContext;
+import org.apache.lucene.search.Collector;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Scorer;
 import org.apache.lucene.util.BytesRef;
+import uk.co.flax.luwak.Monitor;
 import uk.co.flax.luwak.MonitorQuery;
 import uk.co.flax.luwak.QueryCache;
 import uk.co.flax.luwak.QueryCacheException;
@@ -58,5 +65,36 @@ public abstract class ParsingQueryCache implements QueryCache {
     @Override
     public final Entry get(BytesRef hash) throws QueryCacheException {
         return entries.get(hash);
+    }
+
+    @Override
+    public Stats getStats() {
+        return new Stats(entries.size(), -1);
+    }
+
+    @Override
+    public final void purge(Monitor monitor) throws IOException {
+        Set<BytesRef> allHashes = entries.keySet();
+        monitor.match(new MatchAllDocsQuery(), new Collector() {
+            @Override
+            public void setScorer(Scorer scorer) throws IOException {
+
+            }
+
+            @Override
+            public void collect(int doc) throws IOException {
+
+            }
+
+            @Override
+            public void setNextReader(AtomicReaderContext context) throws IOException {
+
+            }
+
+            @Override
+            public boolean acceptsDocsOutOfOrder() {
+                return false;
+            }
+        });
     }
 }

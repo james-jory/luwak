@@ -116,6 +116,18 @@ public class TestMonitor {
         Assertions.assertThat(monitor.getQueryCount()).isEqualTo(0);
     }
 
+    @Test
+    public void canPurgeTheQueryCache() throws IOException {
+        monitor.update(new MonitorQuery("query1", "a"), new MonitorQuery("query2", "b"));
+        monitor.update(new MonitorQuery("query1", "c"));
+
+        QueryCache.Stats cacheStats = monitor.getQueryCacheStats();
+        Assertions.assertThat(cacheStats.count).isEqualTo(3);
+
+        monitor.purgeQueryCache();
+        Assertions.assertThat(monitor.getQueryCacheStats().count).isEqualTo(2);
+    }
+
     static final Analyzer WHITESPACE = new WhitespaceAnalyzer(Constants.VERSION);
 
 }
